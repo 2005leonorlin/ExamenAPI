@@ -97,16 +97,16 @@ public class ApiController {
     /**
      * GET /stadistics : Obtener estadísticas de la tienda.
      *
-     * @param minRate la puntuación mínima para filtrar ítems con alta puntuación (opcional)
+     * @param min la puntuación mínima para filtrar ítems con alta puntuación (opcional)
      * @return el ResponseEntity con el estado 200 (OK) y con el cuerpo las estadísticas
      */
 
-    @GetMapping("/stadistics")
-    public ResponseEntity<?> getStoreStats(@RequestParam(required = false) Double minRate) {
+    @GetMapping("/statics/{min}")
+    public ResponseEntity<?> getStoreStats(@PathVariable Double min) {
         long totalItems = itemRepository.count();
-        List<Item> highRatedItems = (minRate != null) ? itemRepository.findByRateGreaterThan(minRate) : List.of();
+        List<Item> highRatedItems = itemRepository.findByRateGreaterThan(min);
 
-        return ResponseEntity.ok().body("Total de ítems: " + totalItems + ", Ítems con puntuación mayor a " + minRate + ": " + highRatedItems.size());
+        return ResponseEntity.ok().body("Total de ítems: " + totalItems + ", Ítems con puntuación mayor a " + min + ": " + highRatedItems.size());
     }
 }
 
